@@ -99,9 +99,134 @@ function MapScriptToIcon(scriptName, defaultIcon)
          return nil
     end
 
+    -- Get the current game language
+    local currentLang = GetCVar("Language.2")
+    
+    -- Mapping of effect names in different languages
+    local effectTranslations = {
+        ["en"] = {
+            ["flame"] = "flame",
+            ["frost"] = "frost",
+            ["shock"] = "shock",
+            ["magic"] = "magic",
+            ["heal"] = "heal",
+            ["resources"] = "resources",
+            ["ultimate"] = "ultimate",
+            ["stun"] = "stun",
+            ["immobilize"] = "immobilize",
+            ["knockback"] = "knockback",
+            ["dispel"] = "dispel",
+            ["shield"] = "shield",
+            ["physical"] = "physical",
+            ["multi-target"] = "multi-target",
+            ["bleed"] = "bleed",
+            ["trauma"] = "trauma",
+            ["poison"] = "poison",
+            ["disease"] = "disease",
+            ["mitigation"] = "mitigation",
+            ["taunt"] = "taunt",
+            ["pull"] = "pull"
+        },
+        ["de"] = {
+            ["flame"] = "flammen",
+            ["frost"] = "frost",
+            ["shock"] = "schock",
+            ["magic"] = "magie",
+            ["heal"] = "heilung",
+            ["resources"] = "ressourcen",
+            ["ultimate"] = "ultimativ",
+            ["stun"] = "betäubung",
+            ["immobilize"] = "festhalten",
+            ["knockback"] = "rückstoß",
+            ["dispel"] = "bannen",
+            ["shield"] = "schild",
+            ["physical"] = "physisch",
+            ["multi-target"] = "mehrere",
+            ["bleed"] = "blutung",
+            ["trauma"] = "trauma",
+            ["poison"] = "gift",
+            ["disease"] = "seuche",
+            ["mitigation"] = "mitigation",
+            ["taunt"] = "verspotten",
+            ["pull"] = "ziehen"
+        },
+        ["fr"] = {
+            ["flame"] = "flamme",
+            ["frost"] = "givre",
+            ["shock"] = "foudre",
+            ["magic"] = "magique",
+            ["heal"] = "soin",
+            ["resources"] = "ressources",
+            ["ultimate"] = "ultime",
+            ["stun"] = "étourdissement",
+            ["immobilize"] = "immobiliser",
+            ["knockback"] = "repousse",
+            ["dispel"] = "dissiper",
+            ["shield"] = "bouclier",
+            ["physical"] = "physique",
+            ["multi-target"] = "cible multiple",
+            ["bleed"] = "saignement",
+            ["trauma"] = "trauma",
+            ["poison"] = "poison",
+            ["disease"] = "maladie",
+            ["mitigation"] = "absorption",
+            ["taunt"] = "provocation",
+            ["pull"] = "attraction"
+        },
+        ["es"] = {
+            ["flame"] = "fuego",
+            ["frost"] = "escarcha",
+            ["shock"] = "descarga",
+            ["magic"] = "mágic",
+            ["heal"] = "cura",
+            ["resources"] = "recursos",
+            ["ultimate"] = "habilidad máxima",
+            ["stun"] = "aturdimiento",
+            ["immobilize"] = "inmovilizar",
+            ["knockback"] = "empuj",
+            ["dispel"] = "disipar",
+            ["shield"] = "escudo",
+            ["physical"] = "físico",
+            ["multi-target"] = "multiobjetivo",
+            ["bleed"] = "sangrado",
+            ["trauma"] = "trauma",
+            ["poison"] = "veneno",
+            ["disease"] = "enfermedad",
+            ["mitigation"] = "mitigación",
+            ["taunt"] = "provocar",
+            ["pull"] = "atracción"
+        },
+        ["ru"] = {
+            ["flame"] = "огненный",
+            ["frost"] = "мороз",
+            ["shock"] = "электричество",
+            ["magic"] = "магический",
+            ["heal"] = "исцеление",
+            ["resources"] = "ресурс",
+            ["ultimate"] = "суперспособности",
+            ["stun"] = "оглушение",
+            ["immobilize"] = "обездвиживание",
+            ["knockback"] = "отбрасывание",
+            ["dispel"] = "рассеивание",
+            ["shield"] = "щит",
+            ["physical"] = "физический",
+            ["multi-target"] = "нескольким целям",
+            ["bleed"] = "кровотечения",
+            ["trauma"] = "рана",
+            ["poison"] = "яд",
+            ["disease"] = "болезнетворный",
+            ["mitigation"] = "увеличение эффективности",
+            ["taunt"] = "провоцирование",
+            ["pull"] = "притяжение"
+        }
+    }
+
     scriptName = string.lower(scriptName)
+    local translations = effectTranslations[currentLang] or effectTranslations["en"]
+    
     for key, value in pairs(customIcons) do
-        if string.find(scriptName, key, 1, true) then
+        local translatedEffect = translations[key]
+        if translatedEffect and string.find(scriptName, translatedEffect, 1, true) then
             return value
         end
     end
